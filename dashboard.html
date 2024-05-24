@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beta Byte</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        
+        .chart-container {
+            height: 400px;
+            margin: 0 auto;
+            display: block;
+            display: flex;
+            justify-content: center;
+        }
+        .table-container {
+            height: 400px;
+            overflow-x: auto;
+        }
+        td, th{
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="https://media.licdn.com/dms/image/D5622AQGyYFdJ-DNDWQ/feedshare-shrink_2048_1536/0/1704794785950?e=2147483647&v=beta&t=3sepKWOSOAbzEI6ErsJPbeOP-uC4ZDLYk_V5XgAjBio" alt="" width="50" height="50">
+            </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">DashBoard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Acompanhamento</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Cadastros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Vendas e contratos</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    <div class="container-fluid"  style="max-width: 100vw;">
+        <div class="row" >
+          <div class="col-md-5 border rounded shadow p-3 bg-body m-2">
+              <canvas id="myChartVendas"></canvas>
+  
+          </div>
+          <div class="col-md-6 border rounded shadow p-3 bg-body m-2">
+              <canvas id="myChartQntProd"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 border rounded shadow p-3 bg-body m-2">
+                <div class="row ">                  
+                    <div class="col-md-12 ">
+                        <p class="fw-light" style="text-align: center;">Entregas</p>
+                    </div>
+                    <div class="col-md-12 table-container">
+                        <table class="table table-striped border">
+                          <thead>
+                            <tr>
+                              <th scope="col">Codigo</th>
+                              <th scope="col">Cliente</th>
+                              <th scope="col">Produto</th>
+                              <th scope="col">Quantidade</th>
+                              <th scope="col">Valor</th>
+                              <th scope="col">Data</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Tomate</td>
+                                <td>150 KG</td>
+                                <td>R$1100.00</td>
+                                <td>12/05/24</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Alface</td>
+                                <td>100 KG</td>
+                                <td>R$500.00</td>
+                                <td>12/05/24</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Tomate</td>
+                                <td>350 KG</td>
+                                <td>R$3000.00</td>
+                                <td>12/05/24</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Arroz</td>
+                                <td>550 KG</td>
+                                <td>R$6500.00</td>
+                                <td>12/05/24</td>
+                            </tr>
+                            <tr>
+                                  <th scope="row">2</th>
+                                  <td>João</td>
+                                  <td>Alface</td>
+                                  <td>300 KG</td>
+                                  <td>R$1600.00</td>
+                                  <td>12/05/24</td>
+                            </tr>
+                            <tr>
+                                    <th scope="row">3</th>
+                                    <td>Andre</td>
+                                    <td>Cebola</td>
+                                    <td>200 KG</td>
+                                    <td>R$650.00</td>
+                                    <td>12/05/24</td>
+                            </tr>
+                          </tbody>
+                      </table>
+                      
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 border rounded shadow p-3 bg-body m-2">
+                <div class="chart-container">
+                    <canvas id="myChartEstoque"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+<script>
+    function ctxBarras(){
+        var Despesas =      [-3480 ,-2700 ,-4300 ,-5700 ,-1480 ,-3700 ,-4300 ,-5300 ,-4900 ,-1980 ,-6300 ,-5300 ]
+        var ReceitasBruta = [12490 ,9400  ,15430 ,23450 ,5830 ,13900 ,14030 ,18300 ,14100 ,9700 ,18490 ,19400 ]
+        var receitaLiquida = [];
+    
+        for (let i = 0; i < ReceitasBruta.length; i++) {
+            receitaLiquida.push(ReceitasBruta[i] + Despesas[i]);
+        }
+        
+        const DATA_COUNT = 7;
+        const NUMBER_CFG = { count: DATA_COUNT, min: -100, max: 100 };
+
+        const labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        const data = {
+        labels: labels,
+        datasets: [
+            {
+            label: 'Receitas bruta',
+            data: ReceitasBruta,
+            borderColor: '2cff2c',
+            backgroundColor: '#2cff2c',
+            order: 1
+            },
+            {
+            label: 'Despesas',
+            data: Despesas,
+            borderColor: '#ff4141',
+            backgroundColor: '#ff4141',
+            order: 1
+            },
+            {
+            label: 'Receita liquida',
+            data: receitaLiquida,
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            type: 'line',
+            order: 0
+            }
+        ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Finanças anual'
+                }
+                }
+            },
+        };
+
+        const ctx = document.getElementById('myChartVendas');
+        new Chart(ctx, config);
+    }
+    
+    function ctxPizza(){
+        const ctx = document.getElementById('myChartEstoque').getContext('2d');
+        const data = {
+            labels: ['Alface',
+                     'Tomate',
+                     'Cenoura',
+                     'Beterraba',
+                     'Rabanete',
+                     'Espinafre',
+                     'Couve',
+                     'Manjericão',
+                     'Coentro',
+                     'Pimentão',
+                     'Morango',
+                     'Abobrinha'],
+
+            datasets: [{
+                data:[ 544, 323, 650, 513, 650, 421, 650, 554, 650, 231, 650, 423, 650, 526, 650, 523, 650],
+                backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+            }]
+        };
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                legend: {
+                    display: false,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: "Estoque"
+                }
+                }
+            },
+        };
+        new Chart(ctx, config);
+    }
+    
+    function ctxQntProd() {
+    const ctx = document.getElementById('myChartQntProd').getContext('2d');
+
+    const DATA_COUNT = 7;
+    const NUMBER_CFG = { count: DATA_COUNT, min: -100, max: 100 };
+
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Dataset 1',
+                data: Array.from({ length: DATA_COUNT }, () => Math.floor(Math.random() * (NUMBER_CFG.max - NUMBER_CFG.min) + NUMBER_CFG.min)),
+                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            },
+            {
+                label: 'Dataset 2',
+                data: Array.from({ length: DATA_COUNT }, () => Math.floor(Math.random() * (NUMBER_CFG.max - NUMBER_CFG.min) + NUMBER_CFG.min)),
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            },
+            {
+                label: 'Dataset 3',
+                data: Array.from({ length: DATA_COUNT }, () => Math.floor(Math.random() * (NUMBER_CFG.max - NUMBER_CFG.min) + NUMBER_CFG.min)),
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            },
+        ]
+    };
+
+
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Quantidade de Produtos'
+                },
+            },
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y:{
+                    stacked: true,
+                }
+            }
+        }
+    }
+
+    new Chart(ctx, config);
+
+
+}
+
+
+    ctxQntProd()
+    ctxPizza()
+    ctxBarras()
+</script>
